@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
-#awk 
-awk '{print $10, $1, $9}'  apache-access.log |sort -k1,1n
+#awk
+awk '{count[$1" "$9]++} END {for (i in count) print count[i], i}' /var/log/apache2/access.log | sort -rn
 
