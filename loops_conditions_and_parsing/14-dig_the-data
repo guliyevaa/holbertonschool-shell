@@ -1,14 +1,4 @@
 #!/usr/bin/env bash
 #awk
-awk '
-{
-    # Assuming standard Apache log format: $1=IP, $9=HTTP Status Code
-    key = $1 " " $9;
-    count[key]++;
-}
-END {
-    # Output format: OCCURRENCE_NUMBER IP HTTP_CODE
-    for (key in count) {
-        print count[key], key;
-    }
-}' "${1:-/dev/stdin}" | sort -nr
+awk '{count[$1" "$9]++} END {for (key in count) print count[key], key}' apache-access.log | sort -rn
+
