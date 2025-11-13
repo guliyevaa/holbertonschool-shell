@@ -12,7 +12,7 @@ case "$1" in
         ;;
     stop)
         if [ -f $PIDFILE ]; then
-            kill $(cat $PIDFILE)
+            kill "$(cat $PIDFILE)"
             rm -f $PIDFILE
             echo "manage_my_process stopped"
         else
@@ -21,7 +21,7 @@ case "$1" in
         ;;
     restart)
         if [ -f $PIDFILE ]; then
-            kill $(cat $PIDFILE)
+            kill "$(cat $PIDFILE)"
             rm -f $PIDFILE
         fi
         $SCRIPT &
