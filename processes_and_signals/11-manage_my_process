@@ -4,14 +4,6 @@
 PIDFILE="/var/run/my_process.pid"
 SCRIPT="/path/to/manage_my_process"   # Replace with the correct path if needed
 
-stop_process() {
-    if [ -f "$PIDFILE" ]; then
-        kill "$(cat "$PIDFILE")"
-        rm -f "$PIDFILE"
-    fi
-    echo "manage_my_process stopped"
-}
-
 case "$1" in
     start)
         $SCRIPT &
@@ -19,10 +11,19 @@ case "$1" in
         echo "manage_my_process started"
         ;;
     stop)
-        stop_process
+        if [ -f "$PIDFILE" ]; then
+            kill "$(cat "$PIDFILE")"
+            rm -f "$PIDFILE"
+        fi
+        echo "manage_my_process stopped"
         ;;
     restart)
-        stop_process
+        # Stop silently
+        if [ -f "$PIDFILE" ]; then
+            kill "$(cat "$PIDFILE")"
+            rm -f "$PIDFILE"
+        fi
+        # Start again
         $SCRIPT &
         echo $! > "$PIDFILE"
         echo "manage_my_process restarted"
