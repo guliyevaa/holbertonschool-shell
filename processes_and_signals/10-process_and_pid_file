@@ -1,15 +1,18 @@
 #!/usr/bin/env bash
-# Create a PID file
-echo $$ > /var/run/myscript.pid
+# Use /tmp instead of /var/run
+PID_FILE="/tmp/myscript.pid"
+
+# Create PID file
+echo $$ > "$PID_FILE"
 
 # Handle SIGTERM: print message, remove PID file, terminate
-trap "echo 'I hate the kill command'; rm -f /var/run/myscript.pid; exit" SIGTERM
+trap "echo 'I hate the kill command'; rm -f \"$PID_FILE\"; exit" SIGTERM
 
 # Handle SIGINT (Ctrl+C): print message only
 trap "echo 'Y U no love me?!'" SIGINT
 
 # Handle SIGQUIT (Ctrl+\): remove PID file and terminate
-trap "rm -f /var/run/myscript.pid; exit" SIGQUIT
+trap "rm -f \"$PID_FILE\"; exit" SIGQUIT
 
 # Infinite loop
 while true; do
