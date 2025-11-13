@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 #Write a Bash script that displays To infinity and beyond indefinitely.
-while :; do
-    echo "Looping forever"
+#!/bin/bash
+while true; do
+    echo "This will run forever"
+    sleep 1
 done
