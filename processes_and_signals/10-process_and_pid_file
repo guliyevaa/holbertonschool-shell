@@ -1,21 +1,32 @@
 #!/usr/bin/env bash
-# Use /tmp instead of /var/run
-PID_FILE="/tmp/myscript.pid"
+PIDFILE="/var/run/myscript.pid"
 
-# Create PID file
-echo $$ > "$PID_FILE"
+# Save the PID of this script
+echo $$ > "$PIDFILE"
 
-# Handle SIGTERM: print message, remove PID file, terminate
-trap "echo 'I hate the kill command'; rm -f \"$PID_FILE\"; exit" SIGTERM
+# Handler for SIGINT (Ctrl+C)
+handle_sigint() {
+    echo "Y U no love me?!"
+}
 
-# Handle SIGINT (Ctrl+C): print message only
-trap "echo 'Y U no love me?!'" SIGINT
+# Handler for SIGTERM (pkill or kill)
+handle_sigterm() {
+    echo "I hate the kill command"
+}
 
-# Handle SIGQUIT (Ctrl+\): remove PID file and terminate
-trap "rm -f \"$PID_FILE\"; exit" SIGQUIT
+# Handler for SIGQUIT or SIGTERM to clean up and exit
+cleanup() {
+    rm -f "$PIDFILE"
+    exit 0
+}
 
-# Infinite loop
+# Trap signals
+trap handle_sigint SIGINT
+trap handle_sigterm SIGTERM
+trap cleanup SIGQUIT SIGTERM
+
+# Infinite loop printing the message
 while true; do
     echo "To infinity and beyond"
-    sleep 2
+    sleep 1
 done
