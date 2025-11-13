@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+#test
 PIDFILE="/var/run/myscript.pid"
 
 # Save the PID of this script
