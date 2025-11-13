@@ -14,5 +14,5 @@ trap "rm -f /var/run/myscript.pid; exit" SIGQUIT
 # Infinite loop
 while true; do
     echo "To infinity and beyond indefinitely"
-    sleep 2
+    sleep 3
 done
